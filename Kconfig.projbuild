@@ -1,0 +1,81 @@
+menu "Utils"
+
+    config UTILS_SPIFFS_INIT
+        bool "Default spiffs init"
+        default false
+        help
+            Init spiffs on start
+
+    config UTILS_SPIFFS_CHECK
+        bool "Check spiffs on boot"
+        depends on UTILS_SPIFFS_INIT
+        default false
+        help
+            Check spiffs on start. Long time procedure.
+    
+    config JSON_MIN_TOKEN_SIZE
+        int "Default minimum depth"
+        range 2 50
+        default 25
+        help
+			Default JSON minimum depth
+
+    menu "SPIFFS Trace task"
+        depends on UTILS_SPIFFS_INIT
+        depends on DEBUG_CODE
+
+        config UTILS_SPIFFS_TRACE_TASK
+            bool "Add trace to spiffs"
+            default false
+            help
+                Add tracing to the file
+    
+        choice
+            depends on UTILS_SPIFFS_TRACE_TASK
+            prompt "Choose core for the trace task"
+            default UTILS_TRACE_TASK1
+            help
+                Core for the trace task
+    
+            config UTILS_TRACE_TASK0
+                bool "core 0"
+    
+            config UTILS_TRACE_TASK1
+                bool "core 1"
+    
+        endchoice
+ 
+        config UTILS_SPIFFS_FILES_DEL
+            depends on UTILS_SPIFFS_TRACE_TASK
+            bool "Delete log files"
+            default true
+            help
+                Delete old trace files
+       
+        config UTILS_SPIFFS_FILES_COUNT
+            depends on UTILS_SPIFFS_FILES_DEL
+            int "Maximum of log files"
+            range 1 10
+            default 5
+            help
+                Maximum of log files
+
+    endmenu
+
+    menu "Console"
+        config CONSOLE_MAX_CMDLINE_LENGTH
+            int "Maximum cmd line length"
+            range 128 4096
+            default 1024
+            help
+                Console line length
+
+        config CONSOLE_PROMPT
+            string "Command prompt"
+            default "gonets>"
+            help
+                Console Command prompt
+
+    endmenu
+
+endmenu
