@@ -106,7 +106,7 @@ public:
 	  \param[in] func Обработчик json команды.
 	  \param[in] func2 Обработчик exit команды.
 	*/
-	void start(onJsonCmdEvent* func, onExitCmdEvent* func2=nullptr);
+	void start(onJsonCmdEvent* func=nullptr, onExitCmdEvent* func2=nullptr);
 	/// Остановка консоли.
 	void stop();
 

@@ -50,14 +50,17 @@ void CConsole::start(onJsonCmdEvent* func, onExitCmdEvent* func2)
 	//repl_config.task_stack_size = 8192;
     esp_console_register_help_command();
 
-	const esp_console_cmd_t json_cmd = {
-        .command = "json",
-        .help = "Send json command",
-        .hint = "{Format json without spaces}",
-        .func = &do_json_cmd,
-        .argtable = nullptr
-    };
-	ESP_ERROR_CHECK(esp_console_cmd_register(&json_cmd));
+	if(func != nullptr)
+	{
+		const esp_console_cmd_t json_cmd = {
+			.command = "json",
+			.help = "Send json command",
+			.hint = "{Format json without spaces}",
+			.func = &do_json_cmd,
+			.argtable = nullptr
+		};
+		ESP_ERROR_CHECK(esp_console_cmd_register(&json_cmd));
+	}
 
 #ifdef CONFIG_UTILS_SPIFFS_INIT
 	const esp_console_cmd_t ls_cmd = {
@@ -94,14 +97,17 @@ void CConsole::start(onJsonCmdEvent* func, onExitCmdEvent* func2)
 	ESP_ERROR_CHECK(esp_console_cmd_register(&frm_cmd));
 #endif //CONFIG_UTILS_SPIFFS_INIT
 
-	const esp_console_cmd_t exit_cmd = {
-        .command = "e",
-        .help = "Close console",
-        .hint = nullptr,
-        .func = &do_exit_cmd,
-        .argtable = nullptr
-    };
-	ESP_ERROR_CHECK(esp_console_cmd_register(&exit_cmd));
+	if(func2 != nullptr)
+	{
+		const esp_console_cmd_t exit_cmd = {
+			.command = "e",
+			.help = "Close console",
+			.hint = nullptr,
+			.func = &do_exit_cmd,
+			.argtable = nullptr
+		};
+		ESP_ERROR_CHECK(esp_console_cmd_register(&exit_cmd));
+	}
 
 #if CONFIG_ESP_CONSOLE_UART
     esp_console_dev_uart_config_t uart_config = ESP_CONSOLE_DEV_UART_CONFIG_DEFAULT();
@@ -116,7 +122,7 @@ void CConsole::start(onJsonCmdEvent* func, onExitCmdEvent* func2)
 
 	onCmd = func;
 	onExit = func2;
-	vTaskDelay(pdMS_TO_TICKS(150));
+	//vTaskDelay(pdMS_TO_TICKS(150));
 	ESP_ERROR_CHECK(esp_console_start_repl(mRepl));
 }
 
