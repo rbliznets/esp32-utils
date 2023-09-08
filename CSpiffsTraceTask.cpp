@@ -127,6 +127,12 @@ void CSpiffsTraceTask::run()
 			break;
 		case MSG_PRINT_STRING:
 			std::fprintf(mLogFile,(char*)msg.msgBody);
+#ifndef CONFIG_UTILS_SPIFFS_TRACE_FLASH
+			if(*((char*)msg.msgBody) == 0)
+			{
+				std::fflush(mLogFile);
+			}
+#endif
 			vPortFree(msg.msgBody);
 			std::fprintf(mLogFile,"\n");
 			break;
@@ -135,7 +141,7 @@ void CSpiffsTraceTask::run()
 			vPortFree(msg.msgBody);
 			std::fprintf(mLogFile,"trace reboot...\n");
 			// vPortFree(msg.msgBody);
-			fflush(mLogFile);
+			std::fflush(mLogFile);
 			std::fclose(mLogFile);
 			esp_restart();
 			break;
@@ -188,11 +194,12 @@ void CSpiffsTraceTask::run()
 			vPortFree(msg.msgBody);
 			break;
 		default:
-			std::fprintf(mLogFile,"CSpiffsTraceTask unknown message %d\n", msg.msgID);
+			ESP_LOGW(TAG,"CSpiffsTraceTask unknown message %d",msg.msgID);
 			break;
 		}
+#ifdef CONFIG_UTILS_SPIFFS_TRACE_FLASH
 		std::fflush(mLogFile);
-		//ESP_LOGI(TAG,"msg %d",msg.msgID);
+#endif
 	}
 	std::fclose(mLogFile);
 }

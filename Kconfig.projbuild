@@ -29,7 +29,13 @@ menu "Utils"
             default false
             help
                 Add tracing to the file
-    
+
+        config UTILS_SPIFFS_TRACE_FLASH
+            bool "Flash data on every message"
+            default true
+            help
+                If false then flash on LOG("")
+                        
         choice
             depends on UTILS_SPIFFS_TRACE_TASK
             prompt "Choose core for the trace task"
