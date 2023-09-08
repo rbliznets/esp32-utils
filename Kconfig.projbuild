@@ -31,6 +31,7 @@ menu "Utils"
                 Add tracing to the file
 
         config UTILS_SPIFFS_TRACE_FLASH
+            depends on UTILS_SPIFFS_TRACE_TASK
             bool "Flash data on every message"
             default true
             help
