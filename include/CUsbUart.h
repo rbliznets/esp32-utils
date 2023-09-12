@@ -11,6 +11,8 @@
 #define CUSBUART_H
 
 #include "sdkconfig.h"
+#ifdef CONFIG_TINYUSB_CDC_ENABLED
+
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -131,5 +133,7 @@ public:
 	*/
 	void start(onJsonCmdEvent* func, onConectEvent* connect = nullptr, BaseType_t queueLength = 30);
 };
+
+#endif // CONFIG_TINYUSB_CDC_ENABLED
 
 #endif //CUSBUART_H

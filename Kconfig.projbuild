@@ -83,6 +83,13 @@ menu "Utils"
             help
                 Console Command prompt
 
+        config CONSOLE_EXIT_TOUSB
+            depends on TINYUSB_CDC_ENABLED
+            bool "Exit console"
+            default false
+            help
+                Default on exit is to init USB CDC 
+        
     endmenu
 
 endmenu

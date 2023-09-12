@@ -1,4 +1,4 @@
-version: "1.0.0"
+version: "1.0.1"
 description: the command console and tracing to spiffs 
 url: https://github.com/rbliznets/esp32-utils
 dependencies:

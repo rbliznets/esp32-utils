@@ -2,7 +2,7 @@
 	\file
 	\brief Класс консоли.
 	\authors Близнец Р.А.
-	\version 1.0.0.0
+	\version 1.0.1.0
 	\date 03.02.2023
 
 	Один объект на приложение.
@@ -365,3 +365,23 @@ int CConsole::onJsonCmd(const char* json)
 
 	return 0;
 }
+
+#ifdef CONFIG_CONSOLE_EXIT_TOUSB
+#include "CUsbUart.h"
+
+static void onConnect(bool con)
+{
+    if(con)
+    {
+        ESP_LOGI(TAG,"USB console");
+    }
+}
+
+void CConsole::exitConsole()
+{
+    ESP_LOGI(TAG,"close console");
+    vTaskDelay(pdMS_TO_TICKS(500));
+
+    CUsbUart::Instance()->start(CConsole::Instance()->onCmd, onConnect);
+}
+#endif //CONFIG_TINYUSB_CDC_ENABLED

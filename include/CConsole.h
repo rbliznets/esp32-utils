@@ -2,7 +2,7 @@
 	\file
 	\brief Класс консоли.
 	\authors Близнец Р.А.
-	\version 1.0.0.0
+	\version 1.0.1.0
 
 	Один объект на приложение.
 */
@@ -45,8 +45,14 @@ protected:
 	  \return 0 в случае успеха, иначе ошибка
 	*/
 	static int do_exit_cmd(int argc, char **argv);
+
+#ifdef CONFIG_CONSOLE_EXIT_TOUSB
+	/// Событие на выход из консоли
+	static void exitConsole();
+#endif
+
 #ifdef CONFIG_UTILS_SPIFFS_INIT
-	/// Callback функция на команду ld.
+	/// Callback функция на команду ls.
 	/*!
 	  \param[in] argc number of arguments.
 	  \param[in] argv array with argc entries, each pointing to a zero-terminated string argument.
@@ -101,12 +107,21 @@ public:
  	/// Деструктор.
   	virtual ~CConsole();
 
+#ifdef CONFIG_CONSOLE_EXIT_TOUSB
+ 	/// Запуск консоли.
+	/*!
+	  \param[in] func Обработчик json команды.
+	  \param[in] func2 Обработчик exit команды.
+	*/
+	void start(onJsonCmdEvent* func=nullptr, onExitCmdEvent* func2=exitConsole);
+#else
  	/// Запуск консоли.
 	/*!
 	  \param[in] func Обработчик json команды.
 	  \param[in] func2 Обработчик exit команды.
 	*/
 	void start(onJsonCmdEvent* func=nullptr, onExitCmdEvent* func2=nullptr);
+#endif //CONFIG_CONSOLE_EXIT_TOUSB
 	/// Остановка консоли.
 	void stop();
 

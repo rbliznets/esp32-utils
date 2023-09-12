@@ -7,6 +7,9 @@
 	Один объект на приложение.
 */
 
+#include "sdkconfig.h"
+#ifdef CONFIG_TINYUSB_CDC_ENABLED
+
 #include "CUsbUart.h"
 #include "esp_log.h"
 #include "CTrace.h"
@@ -192,3 +195,5 @@ void CUsbUart::run()
 		}
 	}
 }
+
+#endif // CONFIG_TINYUSB_CDC_ENABLED
