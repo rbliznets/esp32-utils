@@ -3,6 +3,14 @@
 
     git submodule add https://github.com/rbliznets/esp32-utils utils
 
+или добавить в *idf_component.yml*:
+
+    dependencies:
+      utils:
+        version: "*"
+        git: https://github.com/rbliznets/esp32-utils.git
+
+
 Зависимость от следующих компонентов:
 - task (https://github.com/rbliznets/esp32-task)
 - espressif/jsmn
