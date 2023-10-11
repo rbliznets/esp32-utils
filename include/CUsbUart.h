@@ -1,7 +1,7 @@
 /*!
 	\file
 	\brief Класс обертка для tinyUSB СDС.
-	\authors Близнец Р.А.
+	\authors Близнец Р.А. (r.bliznets@gmail.com)
 	\version 1.0.0.0
 
 	Один объект на приложение.
@@ -29,19 +29,18 @@
 /*!
 	\param[in] parser парсер json.
 */
-typedef void onJsonCmdEvent(CJsonParser* parser);
+typedef void onJsonCmdEvent(CJsonParser *parser);
 /// Функция события на установку соединения.
 /*!
 	\param[in] con true - подключение, false - отключение.
 */
 typedef void onConectEvent(bool con);
 
-
 /// Класс обертка для tinyUSB СDС.
 class CUsbUart : public CBaseTask
 {
 protected:
-	static bool mConsole0;	///< Флаг перенаправления print в консоль.
+	static bool mConsole0; ///< Флаг перенаправления print в консоль.
 	/// функция обработки данных из CDC.
 	/*!
 	  \param[in] itf номер CDC.
@@ -61,46 +60,45 @@ protected:
 	*/
 	void console_rx(tinyusb_cdcacm_itf_t itf);
 
-
 	/// Функция задачи.
 	virtual void run() override;
 
 	uint8_t mRxBuf0[CONSOLE_MAX_STRING]; ///< Буфер для приема данных для консоли.
-	uint16_t mIndex0=0;///< Размер данных в буфере для приема данных для консоли.
-	
-    CJsonParser mJson;					///< Данные парсера.
-	onJsonCmdEvent* onCmd = nullptr;	///< Обработка события команды json.
+	uint16_t mIndex0 = 0;				 ///< Размер данных в буфере для приема данных для консоли.
+
+	CJsonParser mJson;				 ///< Данные парсера.
+	onJsonCmdEvent *onCmd = nullptr; ///< Обработка события команды json.
 	/// Задекорированная сallback функция на команду json.
 	/*!
 	  \param[in] json аргумент команды.
 	  \return 0 в случае успеха, иначе ошибка
 	*/
-	int onJsonCmd(const char* json);
+	int onJsonCmd(const char *json);
 
-	onConectEvent* onConnect = nullptr;	///< Обработка события подключения
+	onConectEvent *onConnect = nullptr; ///< Обработка события подключения
 
 public:
 	/// Единственный экземпляр класса.
 	/*!
 	  \return Указатель на CConsole
 	*/
-	static CUsbUart* Instance()
+	static CUsbUart *Instance()
 	{
 		static CUsbUart theSingleInstance;
 		return &theSingleInstance;
 	}
- 	/// Деструктор.
-  	virtual ~CUsbUart(){};
+	/// Деструктор.
+	virtual ~CUsbUart(){};
 
 	/// Начальная инициализация.
 	/*!
 	  \param[in] queueLength Максимальная длина очереди сообщений.
 	  \param[in] coreID Ядро CPU (0,1).
 	*/
-    void init(UBaseType_t queueLength = 30, BaseType_t coreID = 1)
-    {
-        CBaseTask::init("cdc", 4096, 0, queueLength, coreID);
-    };
+	void init(UBaseType_t queueLength = 30, BaseType_t coreID = 1)
+	{
+		CBaseTask::init("cdc", 4096, 0, queueLength, coreID);
+	};
 
 	/// Послать сообщение в задачу.
 	/*!
@@ -109,7 +107,7 @@ public:
 	  \param[in] free вернуть память в кучу в случае неудачи.
 	  \return true в случае успеха.
 	*/
-	inline bool sendMessage(STaskMessage* msg,TickType_t xTicksToWait=0, bool free=false) override
+	inline bool sendMessage(STaskMessage *msg, TickType_t xTicksToWait = 0, bool free = false) override
 	{
 		return CBaseTask::sendMessage(msg, 0, xTicksToWait, free);
 	};
@@ -120,20 +118,20 @@ public:
 	  \param[out] pxHigherPriorityTaskWoken Флаг переключения задач.
 	  \return true в случае успеха.
 	*/
-	inline bool sendMessageFromISR(STaskMessage* msg,BaseType_t *pxHigherPriorityTaskWoken) override
+	inline bool sendMessageFromISR(STaskMessage *msg, BaseType_t *pxHigherPriorityTaskWoken) override
 	{
 		return CBaseTask::sendMessageFromISR(msg, pxHigherPriorityTaskWoken, 0);
 	};
 
- 	/// Запуск драйвера.
+	/// Запуск драйвера.
 	/*!
 	  \param[in] func Обработчик json команды.
 	  \param[in] connect Обработчик подключения.
 	  \param[in] queueLength Максимальная длина очереди сообщений.
 	*/
-	void start(onJsonCmdEvent* func, onConectEvent* connect = nullptr, BaseType_t queueLength = 30);
+	void start(onJsonCmdEvent *func, onConectEvent *connect = nullptr, BaseType_t queueLength = 30);
 };
 
 #endif // CONFIG_TINYUSB_CDC_ENABLED
 
-#endif //CUSBUART_H
+#endif // CUSBUART_H

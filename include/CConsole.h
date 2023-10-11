@@ -1,7 +1,7 @@
 /*!
 	\file
 	\brief Класс консоли.
-	\authors Близнец Р.А.
+	\authors Близнец Р.А. (r.bliznets@gmail.com)
 	\version 1.0.1.0
 
 	Один объект на приложение.
@@ -21,7 +21,7 @@
 /*!
 	\param[in] parser парсер json.
 */
-typedef void onJsonCmdEvent(CJsonParser* parser);
+typedef void onJsonCmdEvent(CJsonParser *parser);
 /// Функция события выхода из консоли.
 typedef void onExitCmdEvent();
 
@@ -29,7 +29,7 @@ typedef void onExitCmdEvent();
 class CConsole
 {
 protected:
-	esp_console_repl_t* mRepl = nullptr; ///< Type defined for console REPL..
+	esp_console_repl_t *mRepl = nullptr; ///< Type defined for console REPL..
 
 	/// Callback функция на команду json.
 	/*!
@@ -80,52 +80,51 @@ protected:
 	  \return 0 в случае успеха, иначе ошибка
 	*/
 	static int do_frm_cmd(int argc, char **argv);
-#endif //CONFIG_UTILS_SPIFFS_INIT
+#endif // CONFIG_UTILS_SPIFFS_INIT
 
-
-    CJsonParser mJson;					///< Данные парсера.
-	onJsonCmdEvent* onCmd = nullptr;	///< Обработка события команды json.
+	CJsonParser mJson;				 ///< Данные парсера.
+	onJsonCmdEvent *onCmd = nullptr; ///< Обработка события команды json.
 	/// Задекорированная сallback функция на команду json.
 	/*!
 	  \param[in] json аргумент команды.
 	  \return 0 в случае успеха, иначе ошибка
 	*/
-	int onJsonCmd(const char* json);
+	int onJsonCmd(const char *json);
 
-	onExitCmdEvent* onExit = nullptr;	///< Обработка события команды exit.
+	onExitCmdEvent *onExit = nullptr; ///< Обработка события команды exit.
 
 public:
 	/// Единственный экземпляр класса.
 	/*!
 	  \return Указатель на CConsole
 	*/
-	static CConsole* Instance()
+	static CConsole *Instance()
 	{
 		static CConsole theSingleInstance;
 		return &theSingleInstance;
 	}
- 	/// Деструктор.
-  	virtual ~CConsole();
+	/// Деструктор.
+	virtual ~CConsole();
 
 #ifdef CONFIG_CONSOLE_EXIT_TOUSB
- 	/// Запуск консоли.
+	/// Запуск консоли.
 	/*!
 	  \param[in] func Обработчик json команды.
 	  \param[in] func2 Обработчик exit команды.
 	*/
-	void start(onJsonCmdEvent* func=nullptr, onExitCmdEvent* func2=exitConsole);
+	void start(onJsonCmdEvent *func = nullptr, onExitCmdEvent *func2 = exitConsole);
 #else
- 	/// Запуск консоли.
+	/// Запуск консоли.
 	/*!
 	  \param[in] func Обработчик json команды.
 	  \param[in] func2 Обработчик exit команды.
 	*/
-	void start(onJsonCmdEvent* func=nullptr, onExitCmdEvent* func2=nullptr);
-#endif //CONFIG_CONSOLE_EXIT_TOUSB
+	void start(onJsonCmdEvent *func = nullptr, onExitCmdEvent *func2 = nullptr);
+#endif // CONFIG_CONSOLE_EXIT_TOUSB
 	/// Остановка консоли.
 	void stop();
 
- 	/// Запуск команды.
+	/// Запуск команды.
 	/*!
 	  \param[in] cmdline Строка команды.
 	  \return ESP_OK в случае успеха.
@@ -133,8 +132,8 @@ public:
 	inline esp_err_t run(const char *cmdline)
 	{
 		int x;
-		return esp_console_run(cmdline,&x);
+		return esp_console_run(cmdline, &x);
 	};
 };
 
-#endif //CCONSOLE_H
+#endif // CCONSOLE_H

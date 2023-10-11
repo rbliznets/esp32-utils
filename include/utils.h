@@ -1,9 +1,8 @@
 /*!
 	\file
 	\brief Инициализация utils.
-	\authors Близнец Р.А.
+	\authors Близнец Р.А. (r.bliznets@gmail.com)
 	\version 1.0.0.0
-	\copyright (c) Copyright 2023, ООО "Глобал Ориент", Москва, Россия, https://github.com/Global-Orient/Gonets
 */
 
 #pragma once
