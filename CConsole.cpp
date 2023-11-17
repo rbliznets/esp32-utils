@@ -43,11 +43,16 @@ void CConsole::stop()
 
 void CConsole::start(onJsonCmdEvent *func, onExitCmdEvent *func2)
 {
+	// esp_console_config_t con_config = ESP_CONSOLE_CONFIG_DEFAULT();
+	// con_config.max_cmdline_length = CONFIG_CONSOLE_MAX_CMDLINE_LENGTH;
+	// esp_console_init(&con_config);
+
 	esp_console_repl_config_t repl_config = ESP_CONSOLE_REPL_CONFIG_DEFAULT();
 	repl_config.prompt = CONFIG_CONSOLE_PROMPT;
 	repl_config.max_cmdline_length = CONFIG_CONSOLE_MAX_CMDLINE_LENGTH;
 	repl_config.task_priority = 1;
 	// repl_config.task_stack_size = 8192;
+
 	esp_console_register_help_command();
 
 	if (func != nullptr)
