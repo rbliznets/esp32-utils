@@ -1,5 +1,5 @@
 idf_component_register(SRCS "CConsole.cpp" 
-                    "CJsonParser.cpp" 
+                    
                     "CUsbUart.cpp"
                     "utils.cpp"
                     "CSpiffsTraceTask.cpp"
