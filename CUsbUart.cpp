@@ -49,6 +49,10 @@ void CUsbUart::console_rx(tinyusb_cdcacm_itf_t itf)
         }
         else
         {
+#ifdef CONFIG_CONSOLE_USB_ECHO
+            tinyusb_cdcacm_write_queue(itf, &mRxBuf0[mIndex0],rx_size);
+            tinyusb_cdcacm_write_flush(itf,1);
+#endif 
             for (int i = 0; i < rx_size; i++)
             {
                 if (mRxBuf0[mIndex0] == 0x0d)
@@ -155,7 +159,7 @@ void CUsbUart::run()
             if (onCmd != nullptr)
             {
                 json = (const char *)msg.msgBody;
-                LOG(json);
+                // LOG(json);
                 pch = strchr(json, '{');
                 if (pch != nullptr)
                 {

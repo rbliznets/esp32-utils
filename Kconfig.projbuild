@@ -89,7 +89,14 @@ menu "Utils"
             default false
             help
                 Default on exit is to init USB CDC 
-        
+
+        config CONSOLE_USB_ECHO
+            depends on CONSOLE_EXIT_TOUSB
+            bool "Echo"
+            default true
+            help
+                Default echo 
+                
     endmenu
 
 endmenu
