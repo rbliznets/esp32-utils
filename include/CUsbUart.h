@@ -100,29 +100,6 @@ public:
 		CBaseTask::init("cdc", 4096, 0, queueLength, coreID);
 	};
 
-	/// Послать сообщение в задачу.
-	/*!
-	  \param[in] msg Указатель на сообщение.
-	  \param[in] xTicksToWait Время ожидания в тиках.
-	  \param[in] free вернуть память в кучу в случае неудачи.
-	  \return true в случае успеха.
-	*/
-	inline bool sendMessage(STaskMessage *msg, TickType_t xTicksToWait = 0, bool free = false) override
-	{
-		return CBaseTask::sendMessage(msg, 0, xTicksToWait, free);
-	};
-
-	/// Послать сообщение в задачу из прерывания.
-	/*!
-	  \param[in] msg Указатель на сообщение.
-	  \param[out] pxHigherPriorityTaskWoken Флаг переключения задач.
-	  \return true в случае успеха.
-	*/
-	inline bool sendMessageFromISR(STaskMessage *msg, BaseType_t *pxHigherPriorityTaskWoken) override
-	{
-		return CBaseTask::sendMessageFromISR(msg, pxHigherPriorityTaskWoken, 0);
-	};
-
 	/// Запуск драйвера.
 	/*!
 	  \param[in] func Обработчик json команды.
